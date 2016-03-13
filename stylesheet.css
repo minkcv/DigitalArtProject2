@@ -1,0 +1,31 @@
+body {
+    font-family: monospace;
+    background-color: #000;
+}
+#container {
+    margin: 0 auto;
+    margin-top: 80px;
+    width: 1080px;
+}
+.content {
+    float: left;
+}
+#left-maps {
+    width: 150px;
+    height: 600px;
+    margin-right: 80px;
+}
+#globe {
+    width: 600px;
+    height: 600px;
+}
+#right-maps {
+    width: 150px;
+    height: 600px;
+    margin-left: 80px;
+}
+.place {
+    padding-top: 100px;
+    max-width: 100%;
+    max-height: 100%;
+}

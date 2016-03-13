@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Island</title>
+		<meta name="viewport" content="initial-scale=1.0" />
+		<script src="three.min.js"></script>
+		<script src="photo-sphere-viewer.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	</head>
+
+	<body>
+		<div id="container">
+			<div id="photosphere"></div>
+			<div id="map">
+				<img class="icon" id="gear-icon" src="gear_icon.png" onclick="changePSV('https://i.imgur.com/GLg6Zno.png')"> bunker </img>
+				<img class="icon" id="foun-icon" src="fountain_icon.png" onclick="changePSV('https://i.imgur.com/brc12aQ.png')"> fountain </img>
+				<img class="icon" id="boat-icon" src="boat_icon.png" onclick="changePSV('https://i.imgur.com/X2ay7vn.png')"> boat </img>
+				<img class="icon" id="silo-icon" src="silo_icon.png" onclick="changePSV('https://i.imgur.com/E1T3vnR.png')"> silo </img>
+				<img class="icon" id="tree-icon" src="tree_icon.png" onclick="changePSV('https://i.imgur.com/ATEwPVK.png')"> grove </img>
+				<img id="mapimg" src="map.png"></img>
+			</div>
+		</div>
+		<script>
+			var div = document.getElementById('photosphere');
+			var PSV = new PhotoSphereViewer({
+				panorama: 'https://i.imgur.com/ATEwPVK.png',
+				container: div,
+				navbar: false,
+				time_anim: 0,
+				pano_size: {width: 4096, height: 2160},
+				allow_scroll_to_zoom: false,
+				default_position: {long: -Math.PI / 2, lat: 0 },
+				long_offset: Math.PI/720,
+				lat_offset: Math.PI/720
+			});
+			function changePSV(url) {
+				PSV = new PhotoSphereViewer({
+					panorama: url,
+					container: div,
+					navbar: false,
+					time_anim: 0,
+					pano_size: {width: 4096, height: 2160},
+					allow_scroll_to_zoom: false,
+					default_position: {long: -Math.PI / 2, lat: 0 },
+					long_offset: Math.PI/720,
+				lat_offset: Math.PI/720
+				});
+			}
+		</script>
+	</body>
+</html>
