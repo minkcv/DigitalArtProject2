@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Yellow</title>
+		<meta name="viewport" content="initial-scale=1.0" />
+		<script src="../three.min.js"></script>
+        <script src="../CanvasRenderer.js"></script>
+        <script src="../Projector.js"></script>
+        <script src="../OrbitControls.js"></script>
+		<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	</head>
+
+    <body>
+        <div id="threeapp" class="content">
+        </div>
+        <script>
+			var scene = new THREE.Scene();
+			var div = document.getElementById("threeapp");
+			var camera = new THREE.PerspectiveCamera(75, div.getBoundingClientRect().width / div.getBoundingClientRect().height, 0.1, 1000);
+			//var renderer = new THREE.WebGLRenderer();
+			var renderer = new THREE.CanvasRenderer();
+			renderer.setSize(div.getBoundingClientRect().width - 3, div.getBoundingClientRect().height - 3);
+			div.appendChild(renderer.domElement);
+
+            var cubes = [];
+            var xCubes = 5;
+            var yCubes = 5;
+            var zCubes = 5;
+            var padding = 2;
+            var cubeIndex = 0;
+            for(x = -xCubes; x < xCubes; x++){
+                for(y = -yCubes; y < yCubes; y++){
+                    for(z = -zCubes; z < zCubes; z++){
+                        var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+            			//var material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+                        var material = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
+            			var cube = new THREE.Mesh( geometry, material );
+                        cubes[cubeIndex] = cube;
+                        cube.position.x = x + x * padding;
+                        cube.position.y = y + y * padding;
+                        cube.position.z = (z + z * padding);
+            			scene.add( cubes[cubeIndex] );
+                        cubeIndex++;
+                    }
+                }
+            }
+
+            var controls = new THREE.OrbitControls( camera, renderer.domElement );
+			//controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
+			controls.enableDamping = true;
+			controls.dampingFactor = 0.25;
+			controls.enableZoom = false;
+            controls.enableKeys = false;
+
+            var light = new THREE.PointLight( 0xffffff, 1, 100 );
+            light.position.set( 1, 1, 1 );
+            scene.add( light );
+
+
+			camera.position.z = 5;
+            camera.position.y = 5;
+            camera.position.x = 5;
+			function render() {
+				requestAnimationFrame(render);
+				renderer.render(scene, camera);
+                //camera.position.z += 0.05;
+                controls.update(); // required if controls.enableDamping = true, or if controls.autoRotate = true
+			}
+			render();
+		</script>
+    </body>
+
+</html>

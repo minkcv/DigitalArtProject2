@@ -1,0 +1,10 @@
+body {
+    font-family: monospace;
+    background-color: #000;
+}
+
+#threeapp {
+    margin: 0 auto;
+    width: 600px;
+    height: 600px;
+}
