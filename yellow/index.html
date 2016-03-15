@@ -11,10 +11,53 @@
 		<link rel="stylesheet" type="text/css" href="stylesheet.css">
 	</head>
 
-    <body>
-        <div id="threeapp" class="content">
-        </div>
+    <body >
+		<div id="container">
+	        <div id="threeapp" class="content" onmousedown="mouseDown()" onmouseup="mouseUp()" onmousemove="mouseMove(event)" onmouseout="mouseUp()">
+	        </div>
+			<div id="controls">
+				<div class="slider" id="slider1">
+					<input class="bar" type="range" id="rangeinput" value="50" oninput="rangevalue1.value=value"/>
+					<output id="rangevalue1">50</output>
+				</div>
+				<div class="slider" id="slider2">
+					<input class="bar" type="range" id="rangeinput" value="63" oninput="rangevalue2.value=value"/>
+					<output id="rangevalue2">63</output>
+				</div>
+				<div class="slider" id="slider3">
+					<input class="bar" type="range" id="rangeinput" value="31" oninput="rangevalue3.value=value"/>
+					<output id="rangevalue3">31</output>
+				</div>
+			</div>
+		</div>
         <script>
+			var dx = 0;
+			var dy = 0;
+			var lastx = 0;
+			var lasty = 0;
+			var mouseButtonDown = false;
+			function mouseDown(){
+				mouseButtonDown = true;
+				var x = event.clientX;
+    			var y = event.clientY;
+				lastx = x;
+				lasty = y;
+			}
+			function mouseUp(){
+				mouseButtonDown = false;
+				dx = 0;
+				dy = 0;
+			}
+			function mouseMove(event){
+				if(mouseButtonDown){
+					var x = event.clientX;
+					var y = event.clientY;
+					dx = lastx - x;
+					dy = lasty - y;
+					lastx = x;
+					lasty = y;
+				}
+			}
 			var scene = new THREE.Scene();
 			var div = document.getElementById("threeapp");
 			var camera = new THREE.PerspectiveCamera(75, div.getBoundingClientRect().width / div.getBoundingClientRect().height, 0.1, 1000);
@@ -24,9 +67,9 @@
 			div.appendChild(renderer.domElement);
 
             var cubes = [];
-            var xCubes = 5;
-            var yCubes = 5;
-            var zCubes = 5;
+            var xCubes = 4;
+            var yCubes = 4;
+            var zCubes = 4;
             var padding = 2;
             var cubeIndex = 0;
             for(x = -xCubes; x < xCubes; x++){
@@ -37,35 +80,46 @@
                         var material = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
             			var cube = new THREE.Mesh( geometry, material );
                         cubes[cubeIndex] = cube;
-                        cube.position.x = x + x * padding;
-                        cube.position.y = y + y * padding;
-                        cube.position.z = (z + z * padding);
+                        cube.position.x = x + x * padding + 1.5;
+                        cube.position.y = y + y * padding + 1.5;
+                        cube.position.z = z + z * padding + 1.5;
             			scene.add( cubes[cubeIndex] );
                         cubeIndex++;
                     }
                 }
             }
 
-            var controls = new THREE.OrbitControls( camera, renderer.domElement );
-			//controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
-			controls.enableDamping = true;
-			controls.dampingFactor = 0.25;
-			controls.enableZoom = false;
-            controls.enableKeys = false;
+			var slider1 = document.getElementById('rangevalue1');
+			var slider2 = document.getElementById('rangevalue2');
+			var slider3 = document.getElementById('rangevalue3');
 
             var light = new THREE.PointLight( 0xffffff, 1, 100 );
-            light.position.set( 1, 1, 1 );
+            light.position.set( 10, 10, 10 );
             scene.add( light );
+			light = new THREE.PointLight(0xffffff, 1, 100);
+			light.position.set(-10, -10, -10);
+			scene.add(light);
 
-
-			camera.position.z = 5;
-            camera.position.y = 5;
-            camera.position.x = 5;
+			camera.position.z = 1;
+            camera.position.y = 0;
+            camera.position.x = 0;
+			var time = Date.now();
+			var delta = 0;
+			var maxDelta = 1;
+			var brightness = 0;
 			function render() {
+				delta = Date.now() - time;
+				if(delta > maxDelta)
+					maxDelta = delta;
 				requestAnimationFrame(render);
 				renderer.render(scene, camera);
-                //camera.position.z += 0.05;
-                controls.update(); // required if controls.enableDamping = true, or if controls.autoRotate = true
+				brightness = rangevalue1.innerHTML / 100;
+				for(i = 0; i < cubes.length; i++){
+					cubes[i].material.color.setRGB(brightness, brightness, 0);
+				}
+				camera.rotation.y = slider2.innerHTML / 10;
+				camera.rotation.x = slider3.innerHTML / 10;
+				time = Date.now();
 			}
 			render();
 		</script>
