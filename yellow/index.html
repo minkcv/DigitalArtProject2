@@ -28,6 +28,10 @@
 					<input class="bar" type="range" id="rangeinput" value="31" oninput="rangevalue3.value=value"/>
 					<output id="rangevalue3">31</output>
 				</div>
+				<div class="slider" id="slider4">
+					<input class="bar" type="range" id="rangeinput" value="31" oninput="rangevalue4.value=value"/>
+					<output id="rangevalue4">31</output>
+				</div>
 			</div>
 		</div>
         <script>
@@ -92,6 +96,7 @@
 			var slider1 = document.getElementById('rangevalue1');
 			var slider2 = document.getElementById('rangevalue2');
 			var slider3 = document.getElementById('rangevalue3');
+			var slider4 = document.getElementById('rangevalue4');
 
             var light = new THREE.PointLight( 0xffffff, 1, 100 );
             light.position.set( 10, 10, 10 );
@@ -119,6 +124,7 @@
 				}
 				camera.rotation.y = slider2.innerHTML / 10;
 				camera.rotation.x = slider3.innerHTML / 10;
+				camera.position.z = slider4.innerHTML / 10;
 				time = Date.now();
 			}
 			render();
